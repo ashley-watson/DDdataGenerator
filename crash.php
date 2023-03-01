@@ -12,7 +12,7 @@
 $fail = curl_init();
 
 // Setting curl options	
-curl_setopt($fail, CURLOPT_URL, "http://awsdeb.upheaval.systems/404.php");
+curl_setopt($fail, CURLOPT_URL, "http://127.0.0.1/404.php");
 
 // Execution
 curl_exec($fail);

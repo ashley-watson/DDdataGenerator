@@ -6,8 +6,8 @@
 <section>
 <p>
 <h2>Log Generator</h2>
-<button><a href="http://awsdeb.upheaval.systems:80" redirect>Generate 200 OK</a></button>
-<button><a href="http://awsdeb.upheaval.systems:80/crash.php" crash>Generate 404 Not Found</a></button>
+<button><a href="http://127.0.0.1:80" redirect>Generate 200 OK</a></button>
+<button><a href="http://127.0.0.1:80/crash.php" crash>Generate 404 Not Found</a></button>
 </p>
 </section>
 
@@ -18,10 +18,10 @@ Type event message here: <input type="text" id="event"><br><button onclick="subm
 <?php
 echo "<script>";
 echo "setTimeout(redirect(){";
-echo "window.location.replace('http://awsdeb.upheaval.systems:80');";
+echo "window.location.replace('http://127.0.0.1:80');";
 echo "}, 50);";
 echo "setTimeout(crash(){";
-echo "window.location.replace('http://awsdeb.upheaval.systems:80/crash.php');";
+echo "window.location.replace('http://127.0.0.1:80/crash.php');";
 echo"},50);";
 echo "</script>";
 ?>
