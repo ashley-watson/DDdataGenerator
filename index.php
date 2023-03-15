@@ -6,7 +6,9 @@
 <section>
 <p>
 <h2>Log Generator</h2>
-<h5>Note: Requires a webserver (e.g. Apache2, Nginx, etc)</h5>
+<h4>Note: Requires a webserver (e.g. Apache2, Nginx, etc)</h4>
+<h4>Please also make sure to add the 'dd-agent' user to the group used by the access log</h4>
+<h5>E.g. 'useradd -a -G adm dd-agent' & 'sudo chmod 644 /var/log/apache2/access.log'</h5>
 <button><a href="http://127.0.0.1:80" redirect>Generate 'HTTP/200 OK' Response</a></button>
 <button><a href="http://127.0.0.1:80/crash.php" crash>Generate 'HTTP/404 Not Found' Response</a></button>
 </p>
