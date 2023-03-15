@@ -1,62 +1,74 @@
 <html>
 <body>
 <h1>Ashley's Datadog Data Generator</h1>
-</body>
+
 <p>Data generated at: <span id='date-time'></span>.</p>
 <section>
 <p>
 <h2>Log Generator</h2>
-<button><a href="http://127.0.0.1:80" redirect>Generate 200 OK</a></button>
-<button><a href="http://127.0.0.1:80/crash.php" crash>Generate 404 Not Found</a></button>
+<h5>Note: Requires a webserver (e.g. Apache2, Nginx, etc)</h5>
+<button><a href="http://awsdeb.upheaval.systems:80" redirect>Generate 'HTTP/200 OK' Response</a></button>
+<button><a href="http://awsdeb.upheaval.systems:80/crash.php" crash>Generate 'HTTP/404 Not Found' Response</a></button>
 </p>
 </section>
 
 <section>
+<!-- Creating page body for input -->
 <h2>Event Generator</h2>
-Type event message here: <input type="text" id="event"><br><button onclick="submitEvent()">Submit</button>
-</section>
+<h4>Generate events below!</h4>
+<form method="post">
+API Key: <input type='text' name='apiKey'><br><br>
+Event Title: <input type='text' name='eventTitle'><br>
+Event Text: <input type='text' name='eventMsg'><br>
+Event Tags <input type='text' name='eventTags'> (Note: Separate tags with a comma ',')<br>
+<input type="submit" value="Submit event" name="submit"><br>
+
 <?php
-echo "<script>";
-echo "setTimeout(redirect(){";
-echo "window.location.replace('http://127.0.0.1:80');";
-echo "}, 50);";
-echo "setTimeout(crash(){";
-echo "window.location.replace('http://127.0.0.1:80/crash.php');";
-echo"},50);";
-echo "</script>";
+
+// Init cURL request
+$event = curl_init();
+
+// Parsing input to json
+$apiKey = $_POST['apiKey'];
+
+$title = $_POST['eventTitle'];
+$text = $_POST['eventMsg'];
+$tags = $_POST['eventTags'];
+
+$payload = array(
+	"Title" => $title,
+	"Text" => $text,
+	"Tags" => $tags,
+);
+
+$jsonPayload = json_encode($payload);
+
+// Setting cURL options
+curl_setopt($event, CURLOPT_URL, "https://api.datadoghq.com/api/v1/events");
+curl_setopt($event, CURLOPT_POST, count($payload));
+curl_setopt($event, CURLOPT_POSTFIELDS, $jsonPayload);
+curl_setopt($event, CURLOPT_HTTPHEADER, array(
+	'Accept: application/json',
+	'DD-API-KEY: ' . $apiKey . '',
+	'Content-Type: application/json',
+));
+
+// Posting event to Datadog
+curl_exec($event);
+curl_close($event);
+//header('Location: http://awsdeb.upheaval.systems');
 ?>
-</html>
+</section>
+
+<section>
+<h2>Metric Generator</h2>
+<h4>Coming soon..</h4>
+</section>
 
 <script>
 var dt = new Date();
 document.getElementById('date-time').innerHTML=dt;
 </script>
 
-<script>
-function submitEvent(event)
-{
-	let eventMsg = document.getElementById("event").value;
-	var url = "https://api.datadoghq.com/api/v1/events/";;
-	var data = {};
-	data.title = "Event Generator";
-	data.tag = "KRT";
-	data.text = eventMsg;
-	var json = JSON.stringify(data);
-	//jsonData = '[ { "title": title, "text": eventMsg, "tags": [tagTitle:tagText] } ]';
-
-	const xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = callbackFunction(xmlhttp);
-	xmlhttp.open("POST", url);
-	xmlhttp.setRequestHeader("Content-Type", "application/json");
-	xmlhttp.setRequestHeader("Accept", "application/json");
-	xmlhttp.setRequestHeader("DD-API-KEY", process.env.DD_API_KEY);
-	xmlhttp.send(json);
-	xmlhttp.onload = alertCheck() {
-	if(xmlhttp.status == "200") {
-		alert("Successfully submitted Event");
-	} else {
-		alert("Failed to submit Event");
-	}
-	}
-}
-</script>
+</body>
+</html>
