@@ -7,8 +7,8 @@
 <p>
 <h2>Log Generator</h2>
 <h5>Note: Requires a webserver (e.g. Apache2, Nginx, etc)</h5>
-<button><a href="http://awsdeb.upheaval.systems:80" redirect>Generate 'HTTP/200 OK' Response</a></button>
-<button><a href="http://awsdeb.upheaval.systems:80/crash.php" crash>Generate 'HTTP/404 Not Found' Response</a></button>
+<button><a href="http://127.0.0.1:80" redirect>Generate 'HTTP/200 OK' Response</a></button>
+<button><a href="http://127.0.0.1:80/crash.php" crash>Generate 'HTTP/404 Not Found' Response</a></button>
 </p>
 </section>
 
@@ -56,7 +56,7 @@ curl_setopt($event, CURLOPT_HTTPHEADER, array(
 // Posting event to Datadog
 curl_exec($event);
 curl_close($event);
-//header('Location: http://awsdeb.upheaval.systems');
+//header('Location: http://127.0.0.1');
 ?>
 </section>
 
